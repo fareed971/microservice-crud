@@ -1,0 +1,53 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: kafka-streams-mongodb
+  
+  # MongoDB Configuration
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: kafka_streams_db
+      
+  # Basic Kafka Configuration (no streams)
+  kafka:
+    bootstrap-servers: localhost:9092
+    
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      
+    consumer:
+      group-id: kafka-streams-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest
+      properties:
+        spring.json.trusted.packages: "com.example.model"
+
+# Disable Kafka Streams for testing
+#spring:
+#  kafka:
+#    streams:
+#      application-id: kafka-streams-app
+        
+# Simple topic configuration
+app:
+  kafka:
+    topics:
+      user-events: user-events
+      order-events: order-events
+      processed-events: processed-events
+      error-events: error-events
+      dead-letter: dead-letter-topic
+
+# Logging
+logging:
+  level:
+    com.example: DEBUG
+    org.apache.kafka: INFO
+    org.springframework.kafka: INFO
+    root: INFO
