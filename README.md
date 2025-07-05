@@ -336,4 +336,11 @@ logging:
 
 ## License
 
+
+🔧 Additional Tools Available:
+Kafka UI: http://localhost:8081 - For Kafka topic management
+MongoDB Express: http://localhost:8082 - For database management
+Application APIs: http://localhost:8080/api/events/ - REST endpoints
+This application demonstrates enterprise-level patterns for event-driven architecture with comprehensive error handling, monitoring, and scalability features. It's ready for production use with proper configuration adjustments for your specific environment.
+
 This project is licensed under the MIT License - see the LICENSE file for details.
