@@ -1,0 +1,9 @@
+spring:
+  # MongoDB Configuration for Docker (port 27018)
+  data:
+    mongodb:
+      host: localhost
+      port: 27018
+      database: kafka_streams_db
+      username: admin
+      password: password

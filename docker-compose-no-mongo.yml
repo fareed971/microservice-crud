@@ -34,21 +34,6 @@ services:
     networks:
       - kafka-network
 
-  mongodb:
-    image: mongo:latest
-    container_name: mongodb
-    ports:
-      - "27018:27017"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: password
-      MONGO_INITDB_DATABASE: kafka_streams_db
-    volumes:
-      - mongodb_data:/data/db
-      - ./mongo-init:/docker-entrypoint-initdb.d:ro
-    networks:
-      - kafka-network
-
   # Optional: Kafka UI for easier topic management
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
@@ -64,26 +49,6 @@ services:
     networks:
       - kafka-network
 
-  # Optional: MongoDB Express for database management
-  mongo-express:
-    image: mongo-express:latest
-    container_name: mongo-express
-    depends_on:
-      - mongodb
-    ports:
-      - "8082:8081"
-    environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
-      ME_CONFIG_MONGODB_ADMINPASSWORD: password
-      ME_CONFIG_MONGODB_URL: mongodb://admin:password@mongodb:27017/
-      ME_CONFIG_BASICAUTH_USERNAME: admin
-      ME_CONFIG_BASICAUTH_PASSWORD: admin123
-    networks:
-      - kafka-network
-
 networks:
   kafka-network:
     driver: bridge
-
-volumes:
-  mongodb_data:
