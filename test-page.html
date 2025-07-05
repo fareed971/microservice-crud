@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kafka Streams Application Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        button { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 3px; cursor: pointer; margin: 5px; }
+        button:hover { background: #0056b3; }
+        .response { background: #f8f9fa; padding: 10px; margin: 10px 0; border-radius: 3px; white-space: pre-wrap; font-family: monospace; }
+        .error { background: #f8d7da; color: #721c24; }
+        .success { background: #d4edda; color: #155724; }
+        input { padding: 8px; margin: 5px; border: 1px solid #ddd; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Kafka Streams Application Test</h1>
+        
+        <div class="section">
+            <h2>📊 Application Status</h2>
+            <button onclick="testHealth()">Check Health</button>
+            <button onclick="testStats()">Get Statistics</button>
+            <div id="status-response" class="response"></div>
+        </div>
+
+        <div class="section">
+            <h2>📝 Generate Test Data</h2>
+            <input type="number" id="user-events-count" placeholder="Count" value="5">
+            <button onclick="generateUserEvents()">Generate User Events</button>
+            <br>
+            <input type="number" id="order-events-count" placeholder="Count" value="5">
+            <button onclick="generateOrderEvents()">Generate Order Events</button>
+            <div id="generate-response" class="response"></div>
+        </div>
+
+        <div class="section">
+            <h2>🔍 View Data</h2>
+            <button onclick="getUserEvents()">Get User Events</button>
+            <button onclick="getOrderEvents()">Get Order Events</button>
+            <button onclick="getErrors()">Get Errors</button>
+            <div id="data-response" class="response"></div>
+        </div>
+
+        <div class="section">
+            <h2>📋 Quick Links</h2>
+            <p>You can also test these endpoints directly:</p>
+            <ul>
+                <li><a href="http://localhost:8080/api/events/health" target="_blank">Health Check</a></li>
+                <li><a href="http://localhost:8080/api/events/stats" target="_blank">Statistics</a></li>
+                <li><a href="http://localhost:8080/api/events/user/unprocessed" target="_blank">User Events</a></li>
+                <li><a href="http://localhost:8080/api/events/order/high-value" target="_blank">High-Value Orders</a></li>
+                <li><a href="http://localhost:8080/api/events/errors/unresolved" target="_blank">Unresolved Errors</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        async function makeRequest(url, method = 'GET', body = null) {
+            try {
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: body ? JSON.stringify(body) : null
+                });
+                
+                const data = await response.json();
+                return { success: response.ok, data: data };
+            } catch (error) {
+                return { success: false, error: error.message };
+            }
+        }
+
+        function displayResponse(elementId, response) {
+            const element = document.getElementById(elementId);
+            element.className = 'response ' + (response.success ? 'success' : 'error');
+            element.textContent = JSON.stringify(response.data || response.error, null, 2);
+        }
+
+        async function testHealth() {
+            const response = await makeRequest('/api/events/health');
+            displayResponse('status-response', response);
+        }
+
+        async function testStats() {
+            const response = await makeRequest('/api/events/stats');
+            displayResponse('status-response', response);
+        }
+
+        async function generateUserEvents() {
+            const count = document.getElementById('user-events-count').value || 5;
+            const response = await makeRequest(`/api/events/test/user-events/${count}`, 'POST');
+            displayResponse('generate-response', response);
+        }
+
+        async function generateOrderEvents() {
+            const count = document.getElementById('order-events-count').value || 5;
+            const response = await makeRequest(`/api/events/test/order-events/${count}`, 'POST');
+            displayResponse('generate-response', response);
+        }
+
+        async function getUserEvents() {
+            const response = await makeRequest('/api/events/user/unprocessed');
+            displayResponse('data-response', response);
+        }
+
+        async function getOrderEvents() {
+            const response = await makeRequest('/api/events/order/high-value');
+            displayResponse('data-response', response);
+        }
+
+        async function getErrors() {
+            const response = await makeRequest('/api/events/errors/unresolved');
+            displayResponse('data-response', response);
+        }
+
+        // Test health on page load
+        window.addEventListener('load', testHealth);
+    </script>
+</body>
+</html>
