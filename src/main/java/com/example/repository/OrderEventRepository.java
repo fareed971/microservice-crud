@@ -36,6 +36,8 @@ public interface OrderEventRepository extends MongoRepository<OrderEvent, String
     
     long countByStatus(String status);
     
+    long countByProcessed(boolean processed);
+    
     @Query("{'totalAmount': {$gte: ?0, $lte: ?1}}")
     List<OrderEvent> findByTotalAmountBetween(BigDecimal minAmount, BigDecimal maxAmount);
 }

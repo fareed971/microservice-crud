@@ -1,0 +1,17 @@
+/workspace/src/main/java/com/example/producer/UserEventProducer.java
+/workspace/src/main/java/com/example/model/ErrorEvent.java
+/workspace/src/main/java/com/example/repository/ErrorEventRepository.java
+/workspace/src/main/java/com/example/model/ProcessedEvent.java
+/workspace/src/main/java/com/example/repository/ProcessedEventRepository.java
+/workspace/src/main/java/com/example/controller/EventController.java
+/workspace/src/main/java/com/example/repository/OrderEventRepository.java
+/workspace/src/main/java/com/example/consumer/OrderEventConsumer.java
+/workspace/src/main/java/com/example/model/OrderEvent.java
+/workspace/src/main/java/com/example/KafkaStreamsMongoApplication.java
+/workspace/src/main/java/com/example/producer/OrderEventProducer.java
+/workspace/src/main/java/com/example/service/EventService.java
+/workspace/src/main/java/com/example/config/KafkaConfig.java
+/workspace/src/main/java/com/example/streams/EventStreamProcessor.java
+/workspace/src/main/java/com/example/model/UserEvent.java
+/workspace/src/main/java/com/example/repository/UserEventRepository.java
+/workspace/src/main/java/com/example/consumer/UserEventConsumer.java
