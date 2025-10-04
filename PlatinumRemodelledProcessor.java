@@ -1,3 +1,54 @@
+/**
+ * PlatinumRemodelledProcessor - Processes Silver records to create Platinum records
+ * 
+ * KEY CHANGES FROM SILVER PROCESSOR:
+ * 
+ * 1. REMOVED COMPLEX PARTY MAPPING LOGIC:
+ *    - No LEI resolution (getLeis, getPartyList methods)
+ *    - No party validation (isAnyPartyListNull methods)
+ *    - No complex party combinations (createSilverRecordsList methods)
+ *    - Removed: getLEIsFromPOEAttributes, getLEIsFromCanadaRepAttributes, getLEIsFromPRAttributes
+ *    - Removed: createCanadaBCRSilverRecord, createCanadaRepSilverRecord methods
+ *    - Removed: createSilverRecordFromPOEParties, createSilverCanadaRepRecordsList methods
+ * 
+ * 2. REMOVED POE (PARTY-OPPARTY-ENTITY) LOGIC:
+ *    - No opPartyId, entity fields in new Platinum model
+ *    - No POE key generation (generatePoeWithClientID simplified to just prPartyId)
+ *    - Removed: createCriteriaForPOE complex criteria (now just prPartyId + regProgram)
+ *    - Removed: isInvalidSilverRecord validation (was checking opPartyId/entity/prPartyId)
+ * 
+ * 3. REMOVED CLIENT-LEVEL PROCESSING:
+ *    - No clientId tracking or validation
+ *    - No attributesTransformMap with clientId keys
+ *    - No validClientIdSet/invalidClientIdSet logic
+ *    - Removed: processAttributeMap method entirely
+ *    - Removed: updateAttributes generic method
+ * 
+ * 4. REMOVED COMPLEX RECORD MERGING:
+ *    - No changelog tracking (ChangeLogUtility usage removed)
+ *    - No complex attribute merging (setCanadabcrLeis, setCanadarepLeis methods removed)
+ *    - Simplified updateExistingRecord - just direct replacement
+ * 
+ * 5. REMOVED MANUAL RECORD PROCESSING:
+ *    - No processManualRecords, upsertSilverRecord methods
+ *    - No POEBronzeEvent handling
+ *    - No manual record creation logic
+ * 
+ * 6. SIMPLIFIED DATA FLOW:
+ *    - Input: Silver records (instead of Bronze)
+ *    - Processing: Direct attribute extraction (instead of complex transformation)
+ *    - Output: Simple Platinum records (instead of complex Silver with multiple clients)
+ * 
+ * 7. SURVIVOR LOGIC ADDED:
+ *    - For UMRSECEXEMPTION: Takes survivor record from Silver's records array
+ *    - New logic not present in Silver processor
+ * 
+ * WHAT REMAINS SIMILAR:
+ * - Batch processing pattern
+ * - Event publishing pattern  
+ * - Repository save pattern
+ * - Error handling and logging structure
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor
